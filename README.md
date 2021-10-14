@@ -1,5 +1,37 @@
 # Deploying a Flask API
 
+## External Service IP
+    http://a2ce58f93cbbf4299953847be2bd806c-17187346.eu-north-1.elb.amazonaws.com
+
+### Test if service is running
+    ```'
+    curl --request GET 'http://a2ce58f93cbbf4299953847be2bd806c-17187346.eu-north-1.elb.amazonaws.com'
+    ```
+
+    --> Response 'Healthy'
+
+### Get Token /auth
+    ```
+    export TOKEN=`curl -d '{"email":"test@test.com","password":"testPassword"}' -H "Content-Type: application/json" -X POST http://a2ce58f93cbbf4299953847be2bd806c-17187346.eu-north-1.elb.amazonaws.com/auth  | jq -r '.token'`
+    ```
+
+    --> Test if Token was submitted
+    ```
+    echo $TOKEN
+    ```
+
+ ### Try /contents endpoint with created TOKEN
+    ```
+    curl --request GET 'http://a2ce58f93cbbf4299953847be2bd806c-17187346.eu-north-1.elb.amazonaws.com/contents' -H "Authorization: Bearer ${TOKEN}" | jq
+    ```
+
+    --> Should repond with decoded Token 
+
+
+
+
+
+
 This is the project starter repo for the course Server Deployment, Containerization, and Testing.
 
 In this project you will containerize and deploy a Flask API to a Kubernetes cluster using Docker, AWS EKS, CodePipeline, and CodeBuild.
